@@ -80,7 +80,7 @@ panelbear_analytics: XXXXXXXXX # panelbear analytics site ID
 # -----------------------------------------------------------------------------
 
 blog_name: Kelvin's Tech Blog  # your blog must have a name for it to show up in the nav bar
-blog_description: "If you can't explain it simply, you don't understand it well enough"
+blog_description: \"If you can't explain it simply, you don't understand it well enough\"
 permalink: /blog/:year/:title/
 
 # Pagination
