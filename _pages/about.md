@@ -2,13 +2,14 @@
 layout: about
 title: about
 permalink: /
-description: Master student @ University of Adelaide
+description: Studying <a href = "https://www.adelaide.edu.au/degree-finder/mcomi_mcompinnov.html">master of computing and innovation</a> @ <a href = "https://www.adelaide.edu.au">University of Adelaide</a>
 
 profile:
   align: right
   image: prof_pic.jpg
   address: >
- 
+    <p>This is my dog, Donut.</p>
+
 
 news: true  # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
