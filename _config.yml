@@ -2,13 +2,13 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Kelvin's Tech Blog # the website title (if blank, full name will be used instead)
+title: Kelvin Ting # the website title (if blank, full name will be used instead)
 first_name: Kelvin
-middle_name: R.
+middle_name: 
 last_name: Ting
-email: you@example.com
+email: ting_kelvin@icloud.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+  A journay to the world of technology.
 footer_text: >
 #  Powered by <a href="http://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
 #  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
@@ -80,7 +80,7 @@ panelbear_analytics: XXXXXXXXX # panelbear analytics site ID
 # -----------------------------------------------------------------------------
 
 blog_name: Kelvin's Tech Blog  # your blog must have a name for it to show up in the nav bar
-blog_description: If you can't explain it simply, you don't understand it well enough
+blog_description: "If you can't explain it simply, you don't understand it well enough" - Albert Einstein
 permalink: /blog/:year/:title/
 
 # Pagination
