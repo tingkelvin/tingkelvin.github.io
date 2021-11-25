@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Amortized Analysis in Dynamic Arrays
+title: Some special example in Big O
 date: 2021-11-05 20:21:00-2100
-description: What is the complexity of inserting a new element in a dynamic array?
+description: Some tricky question to test your understanding of big O.
 
 ---
 Here is some tricky questions about big O. 
@@ -22,6 +22,40 @@ int f(n){
 
 <details>
   <summary>Answer</summary>
-  Ans is $2^{N}$
+  Answer     is $$O(2^{N})$$
+  
   If N = 4, f(4) will produce 2 f(3). Then, each f(3) will produce 2 f(2). Since there are 2 f(3), there will 4 f(2). Each f(2) will produce 2 f(1). Since there are 4 f(2), there will be 8 f(1). There are $$2^{0} + 2^{1} + 2^{2} ... 2^{N}$$ recursive calls which is equal to $$2^{N} - 1$$.
+</details>
+
+**Example 2 - Recursive Runtimes**
+
+```java
+void printUnorderedPairs(int[] array) {
+    for (int i= 0; i < array.length; i++) {
+        for (int j= i + 1; j < array.length; j++) {
+            System.out.println(array[i])
+        }
+    }
+}
+```
+
+<details>
+  <summary>Answer</summary>
+  Ans is $O(2^{N})$
+  There are 
+  
+  $$(N-1)+(N-2)+...+2+1$$
+  $$= 1+2+3+...+(N-1)$$
+  $$=\frac{N(N-1)}{N}
+  $$=O(N^{2})$$
+  
+  Or,
+  Loop (i,j) produced when N = 5:
+  (0,1)(0,2)(0,3)(0,4)
+       (1,2)(1,3)(1,4)
+            (2,3)(2,4)
+                 (3,4)
+  Looks like a (N,N) matrix but divided by 2, total amount of loops approximately is
+  $$\frac{N*N}{2}$$
+  $$ = O(N^{2})$$s
 </details>
