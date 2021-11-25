@@ -3,15 +3,27 @@ layout: post
 title: Special Examples in Big O
 date: 2021-11-24 20:21:00-2100
 description: We discuss some special examples in Big O.
+
 ---
 
 Here is some tricky questions about big O. 
 
 Given the following codes, what is its complexity?
 
+**Example 1 - Recursive Runtimes**
+
+```java
+int f(n){
+	if (i <= 1){
+    return 1;
+  }
+	return f(n-1) + f(n-1);
+}
 ```
+
 <details>
-<summary>Answer</summary>
+  <summary>Answer</summary>
+  Ans is $$2^{depth}$$
 
 </details>
-```
+
