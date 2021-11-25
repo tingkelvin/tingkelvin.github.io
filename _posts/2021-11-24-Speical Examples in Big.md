@@ -22,6 +22,6 @@ int f(n){
 
 <details>
   <summary>Answer</summary>
-  Ans is $$2^{N}$$
-  If N = 4, there will be 4 recusrive calls, first call will produce 1 call f(4). Second call will produce 2 recursive calls f(3). Each f(3) call will produce 2 calls. There are $$2^{0} + 2^{1} + 2^{2} ... 2^{N}$$
+  Ans is $2^{N}$
+  If N = 4, f(4) will produce 2 f(3). Then, each f(3) will produce 2 f(2). Since there are 2 f(3), there will 4 f(2). Each f(2) will produce 2 f(1). Since there are 4 f(2), there will be 8 f(1). There are $$2^{0} + 2^{1} + 2^{2} ... 2^{N}$$ recursive calls which is equal to $$2^{N} - 1$$.
 </details>
