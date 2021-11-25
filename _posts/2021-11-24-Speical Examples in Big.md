@@ -81,3 +81,16 @@ void printUnorderedPairs(int[] arrayA, int][ arrayB) {
   $$O(MN})$$
   
 </details>
+
+**Example 3 - Unordered Pairs**
+This one is tricky!
+Suppose we had an algorithm that took in an array of strings, sorted each string, and then sorted the full array. What would the runtime be?
+
+<details>
+  <summary>Answer</summary>
+  Answer is 
+  $$O(100000MN})$$
+  $$O(MN})$$
+  
+</details>
+
