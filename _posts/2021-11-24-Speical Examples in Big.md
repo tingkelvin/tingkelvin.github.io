@@ -42,11 +42,11 @@ void printPairs(int[] array) {
 <details>
   <summary>Answer</summary>
   Answer is $$O(2^{N})$$ 
-  There are 
+  How many loops?
   
   $$(N-1)+(N-2)+...+2+1$$
   $$= 1+2+3+...+(N-1)$$
-  $$=\frac{N(N-1)}{N}
+  $$=\frac{N(N-1)}{N}$$
   $$=O(N^{2})$$
   
   Or,
@@ -83,8 +83,11 @@ void printUnorderedPairs(int[] arrayA, int][ arrayB) {
 </details>
 
 **Example 3 - Unordered Pairs**
+
 This one is tricky!
-Suppose we had an algorithm that took in an array of N strings, the length of each strings is s, sorted each string, and then sorted the full array. What would the runtime be? Asuming soring takes N log N.
+
+Suppose we had an algorithm that took in an array of N strings, the length of each string is s.
+Sorted each string, and then sorted the full array. What would the runtime be? Asuming sorting took O(x log x). 
 
 <details>
   <summary>Answer</summary>
