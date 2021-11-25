@@ -19,7 +19,6 @@ int f(n){
 	return f(n-1) + f(n-1);
 }
 ```
-
 <details>
   <summary>Answer</summary>
   Answer     is $$O(2^{N})$$
@@ -38,7 +37,6 @@ void printPairs(int[] array) {
     }
 }
 ```
-
 <details>
   <summary>Answer</summary>
   Answer is $$O(2^{N})$$ 
@@ -79,7 +77,6 @@ void printUnorderedPairs(int[] arrayA, int][ arrayB) {
   Answer is 
   $$O(100000MN})$$
   $$O(MN})$$
-  
 </details>
 
 **Example 3 - Unordered Pairs**
@@ -99,8 +96,30 @@ Sorted each string, and then sorted the full array. What would the runtime be? A
   There N log N comparsion, therefore this will take O(s*N log N) time
     
   Answer is O(N * s log s) + O(s * N log N) = O(N * s(log N + log s)).
-  
-  
-  
 </details>
 
+**Example 4 - Prime Number**
+
+```
+boolean isPrime(int n) {
+    for (int x = 2; x * x <= n; x++) {
+        if (n % X == 0) {
+            return false;
+        }
+    return true;
+} 
+```
+
+<details>
+  <summary>Answer</summary>
+  When this loop stop?
+  x will mutiply itself until it is smaller or equal to n
+  We can write this,
+  $$ x * x = n $$
+  $$ x = \sqrt{n}$$
+  $$ = O (\sqrt{n})$$
+  If n is 100,
+  x will go though,
+  2*2->4*4->5*5->6*6->7*7->8*8->9*9->10*10
+  This is when the loops tops because 10*10 <= 100. 
+</details>
