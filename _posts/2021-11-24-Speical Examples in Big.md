@@ -84,13 +84,20 @@ void printUnorderedPairs(int[] arrayA, int][ arrayB) {
 
 **Example 3 - Unordered Pairs**
 This one is tricky!
-Suppose we had an algorithm that took in an array of strings, sorted each string, and then sorted the full array. What would the runtime be?
+Suppose we had an algorithm that took in an array of N strings, the length of each strings is s, sorted each string, and then sorted the full array. What would the runtime be? Asuming soring takes N log N.
 
 <details>
   <summary>Answer</summary>
-  Answer is 
-  $$O(100000MN})$$
-  $$O(MN})$$
+  Sorting a string takes s log s and there N strings.
+  Soring  strings takes O(N * s log s).
+  Now sorting the array! This is the tricky part.
+  The way we sort string in a array is to compare each character in string.
+  There are s characters, each time takes O(s).
+  There N log N comparsion, therefore this will take O(s*N log N) time
+    
+  Answer is O(N * s log s) + O(s * N log N) = O(N * s(log N + log s)).
+  
+  
   
 </details>
 
