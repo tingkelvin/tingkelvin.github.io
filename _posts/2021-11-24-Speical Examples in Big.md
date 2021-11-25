@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Special Examples in Big O
-date: 2021-11-24 20:21:00-2100
-description: We discuss some special examples in Big O.
+title: Amortized Analysis in Dynamic Arrays
+date: 2021-11-05 20:21:00-2100
+description: What is the complexity of inserting a new element in a dynamic array?
 
 ---
 Here is some tricky questions about big O. 
@@ -25,4 +25,3 @@ int f(n){
   Ans is $$2^{N}$$
   If N = 4, there will be 4 recusrive calls, first call will produce 1 call f(4). Second call will produce 2 recursive calls f(3). Each f(3) call will produce 2 calls. There are $$2^{0} + 2^{1} + 2^{2} ... 2^{N}$$
 </details>
-
