@@ -180,7 +180,7 @@ int sum(Node node){
   <summary>Answer</summary>
   First glance at this question, you might think binary tree means O(Log N)!
   But if you think carefully, this code travrses all nodes which means its complexity is O(N).
-  
+
   Mathematically, we said that in first examples, each recusive calls will produce 2 recursive calls and there are $$2^{0} + 2^{1} + 2^{2} ... 2^{N}$$ recursive calls which is equal to $$2^{depth} - 1$$. The depth is $$Log N$$, where N is the amount of nodes. Put it together we have,
   $$Let P = 2^{log N}$$
   $$ log P = log 2^{log N}$$
@@ -189,3 +189,37 @@ int sum(Node node){
   $$ 2^{log N} = N $$
  which is also O(N).
 </details>
+
+**Example 8 - Permutations of a String**
+
+Another very tricky question to tease your brain!
+
+```java
+void permutations(String str){
+  permutation(str, "");
+}
+void permutations(String str, String prefix){
+  if (str.length() == 0){
+    System.out.println(prefix);
+  } else {
+    for (int = 0; i < str.length(); i++){
+      String rem = str.substring(0,i) + str.substring(i + 1);
+      permutation(rem, prefix + str.charAt(i));
+    }
+  }
+}
+```
+<details>
+  <summary>Answer</summary>
+    How many base cases are there?
+    If the length of string is N.
+    There are N combination N*(N-1)*(N-2)...*1, that means we have N! base case
+    How many calls before based case?
+    Everytime you call permutation with N-1 call until you reach base case.
+    Since there N charaters so at most N calls before the based case.
+    We have N! base each case at most call N times.
+    So complexity is O(N*N!).
+    Each call take O(N) time to print and O(N)  to concatenate, which O(2N) = O(N)
+    Total complexity = O(N^2 * N!)
+</details>
+
