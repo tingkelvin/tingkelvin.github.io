@@ -190,6 +190,29 @@ int sum(Node node){
  which is also O(N).
 </details>
 
+**Example 9 - All Fibonacci**
+
+Another very tricky question to tease your brain!
+
+```java
+void allFib(int n) {
+    for (int i= 0; i < n; i++) {
+        System.out.println(i + ": "+ fib(i));
+    }
+}
+
+int fib(int n) {
+    if (n <= 0) return 0;
+    else if (n == 1) return 1;
+    return fib(n - 1) + fib(n - 2);
+}
+```
+<details>
+  <summary>Answer</summary>
+    $$2^{n} + 2^{n-1} + 2^{n-2} + ... 2^{1}$$
+    $$ = O(2^{n}) $$
+</details>
+
 **Example 8 - Permutations of a String**
 
 Another very tricky question to tease your brain!
