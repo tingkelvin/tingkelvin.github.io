@@ -192,8 +192,6 @@ int sum(Node node){
 
 **Example 9 - All Fibonacci**
 
-Another very tricky question to tease your brain!
-
 ```java
 void allFib(int n) {
     for (int i= 0; i < n; i++) {
@@ -213,7 +211,7 @@ int fib(int n) {
     $$ = O(2^{n}) $$
 </details>
 
-**Example 8 - Permutations of a String**
+**Example 10 - Permutations of a String**
 
 Another very tricky question to tease your brain!
 
@@ -235,14 +233,143 @@ void permutations(String str, String prefix){
 <details>
   <summary>Answer</summary>
     How many base cases are there?
+    
     If the length of string is N.
+    
     There are N combination N*(N-1)*(N-2)...*1, that means we have N! base case
+    
     How many calls before based case?
+    
     Everytime you call permutation with N-1 call until you reach base case.
+    
     Since there N charaters so at most N calls before the based case.
+    
     We have N! base each case at most call N times.
+    
     So complexity is O(N*N!).
+    
     Each call take O(N) time to print and O(N)  to concatenate, which O(2N) = O(N)
+    
     Total complexity = O(N^2 * N!)
 </details>
 
+**Example 11 - Memorization of a String**
+```java
+void allFib(int n) {
+    int[] memo = new int[n + 1];
+    for(inti= 0;i< n;i++){
+        System.out.println(i + ": "+ fib(i, memo));
+    }
+}
+int fib(int n, int[] memo) {
+    if (n =< 0) return 0;
+    else if (n== 1) return 1;
+    else if (memo[n] > 0) return memo[n];
+    memo[n]= fib(n - 1, memo)+ fib(n - 2, memo);
+    return memo[n];
+}
+```
+<details>
+  <summary>Answer</summary>
+    Any previous number will be remembered in the array.
+    So compexity is O(N)
+</details>
+
+**Example 12 - Power of 2**
+```java
+int powers0f2(int n) {
+    if (n < 1) {
+        return 0;
+    } else if (n == 1) {
+        System.out.println(l);
+        return 1;
+    } else {
+        int prev = powers0f2(n / 2); int curr = prev * 2; System.out.println(curr); return curr;
+    }   
+}
+```
+<details>
+  <summary>Answer</summary>
+    The complexity is
+    $$ log N $$
+    The recusrive call divided n/2 in every calls, how many calls until base case which is 0?
+</details>
+
+**Example 13 - sum of digits**
+```java
+int sumDigits(int n) {
+    int sum = 0;
+    while (n > 0) {
+        sum += n % 10;
+        n /= 10; return sum;
+    }
+    return sum;
+}
+```
+<details>
+  <summary>Answer</summary>
+    The complexity is equal to numbers of digits, lets its d.
+    
+    What is the largest of value N?
+    
+    If d is 4, then the largest value is 10000.
+    The largest is equal to,
+    $$ N = 10 ^ {d} $$
+    $$ log N = log 10 ^ {d} $$
+    $$ d = log N $$
+    
+    hence O(log N)
+    
+</details>
+
+**Example 14 - sum of digits**
+```java
+int numChars = 26;
+void printSortedStrings(int remaining) {
+    printSortedStrings(remaining, "");
+}
+
+void printSortedStrings(int remaining, String prefix) 
+    { if (remaining== 0) {
+        if (isinOrder(prefix)) {
+        System.out.println(prefix);
+    } else {
+        for (int i= 0; i < numchars; i++) {
+            char c = ithletter(i);
+            printSortedStrings(remaining - 1, prefix + c); }
+        }
+    }
+}
+
+boolean isinOrder(String s) {
+    for (int i= 1; i < s.length(); i++) {
+        int prev ithLetter(s.charAt(i - 1));
+        int curr = ithLetter(s.charAt(i));
+        if (prev > curr) {
+            return false;
+        } 
+    }
+    return true;
+}
+
+char ithLetter(int i) {
+    return (char) (((int) 'a') + i); 
+}
+```
+<details>
+  <summary>Answer</summary>
+    Lets r is the remaining (the length of string)
+    
+    The loop in printSortedStrings loop though all the numChars, lets say is c.
+    
+    If r = 4, then there will be 4 printSortedStrings, because the parameters of printSortedStrings is (r-1) until base case which is when r = 0
+    
+    So the complexity of generating string is,
+    $$O(c^{r})$$
+    And, we check if the string is sorted, the way we check is to loop though all the string which takes O(r), we did that to every strings.
+    
+    Total complexity,
+    
+    $$O(rc^{r})$$
+    
+</details>
