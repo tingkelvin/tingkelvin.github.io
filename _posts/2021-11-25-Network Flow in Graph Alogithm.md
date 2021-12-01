@@ -1,14 +1,25 @@
 ---
 layout: post
-title: Network Flow in Graph Algorithm
-date: 2021-11-25 20:21:00-2100
-description: What is Network Flow?
+title: Attack Graph in Cyber Security
+date: 2021-12-01 20:21:00-2100
+description: Directed graph is commonly used in Cyber Security.
 
 ---
 
-### Network Flow
+### Attack Graph
 
-Network flow is important in expressing a wide variety of problems eg, load balancing, operating research ..etc. As a result, developing a good understanding of algorithms that solves network flow will get you to solve many other problems as well.
+Directed graph can be used to represent each users' authentication activity over a time of period.
+
+```
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% responsive_image path: assets/attackgraph/attack graph.png class: "img-fluid z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    A simple, elegant caption looks good between image rows, after each row, or doesn't have to be there at all.
+</div>
+```
 
 **The Netowrk Flow Problem**
 
