@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Attack Graph in Cyber Security
+title: Amortized Analysis in Dynamic Arrays
 date: 2021-12-01 20:21:00-2100
-description: Directed graph is commonly used in Cyber Security.
+description: What is the complexity of inserting a new element in a dynamic array?
 
 ---
 ### Attack Graph
