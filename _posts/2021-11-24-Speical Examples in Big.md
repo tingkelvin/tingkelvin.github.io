@@ -318,7 +318,7 @@ int sumDigits(int n) {
     $$ log N = log 10 ^ {d} $$
     $$ d = log N $$
     
-    hence O(log N)
+    Hence, the complexity is O(log N).
     
 </details>
 
@@ -358,7 +358,7 @@ char ithLetter(int i) {
 ```
 <details>
   <summary>Answer</summary>
-    Lets r is the remaining (the length of string)
+    Lets r is the remaining (the length of string).
     
     The loop in printSortedStrings loop though all the numChars, lets say is c.
     
