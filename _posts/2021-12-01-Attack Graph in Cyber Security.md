@@ -5,7 +5,6 @@ date: 2021-12-01 20:21:00-2100
 description: Directed graph is commonly used in Cyber Security.
 
 ---
-
 ### Attack Graph
 
 Directed graph can be used to represent each users' authentication activity over a time of period.
