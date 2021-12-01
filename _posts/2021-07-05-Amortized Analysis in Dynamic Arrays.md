@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Amortized Analysis in Dynamic Arrays
-date: 2021-07-05 20:21:00-2100
 description: What is the complexity of inserting a new element in a dynamic array?
 
 ---

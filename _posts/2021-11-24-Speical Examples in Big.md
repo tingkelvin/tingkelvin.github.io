@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Some special example in Big O
-date: 2021-11-05 20:21:00-2100
 description: Some tricky question to test your understanding of big O.
 
 ---
