@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Some special example in Big O
-description: Some tricky question to test your understanding of big O.
+description: Some tricky questions to test your understanding of big O.
 
 ---
 Here are some tricky questions about big O. 
