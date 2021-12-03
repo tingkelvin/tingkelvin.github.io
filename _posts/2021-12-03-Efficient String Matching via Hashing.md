@@ -5,6 +5,7 @@ description: Compute String Matching in O(M+N) under Rabin-Karp Algorithm
 
 ---
 **String Matching**
+
 String matching is a common problem in natural language processing. Given a text $$t$$ we want to find if a string $$p$$ exists in the text.
 
 The simpliest way to do this is to compare every characters in the text.
@@ -63,7 +64,7 @@ $$=\ 6$$
 
 In our example, the H("ABD") = H("CDD"), even though they are not the same.
 
-Here is the tricky part. If we want to calcaulte the hash value of second window "BCC", in stead of go though all the calculations. We can subtract it from the first window.
+Then we move to the second window which is 'BCC'. Here is the tricky part. If we want to calcaulte the hash value of second window "BCC", in stead of go though all the calculations. We can subtract it from the first window.
 
 $$H('BCC') = (H(ABC) - H(A))*d + H(C)$$
 
@@ -75,4 +76,6 @@ $$= (((1 * 10^{2}) + (2 * 10^{1}) + (3 * 10^{0}) - (1 * 10^{2}))*10 + 3*10^{0}) 
 
 $$= 12$$
 
-We have to compute the hash value each window, maximum of number of window is $$M$$, so the complexity of computing all windows is $$O(M)$$, if the hash values are the same we check if all the characters which takes $$O(N)$$. We get no guarantee the algorithm runs in $$O(n+m)$$ time, because we may get unlucky and have the hash values regularly collide with spurious matches. Still, the odds are heavily in our favor.
+We have to compute the hash value each window, maximum of number of window is $$M$$, so the complexity of computing all windows is $$O(M)$$, if the hash values of the window and the pattern are the same we check if all the characters are the same which takes $$O(N)$$. 
+
+We get no guarantee the algorithm runs in $$O(n+m)$$ time, because we may get unlucky and have the hash values regularly collide with spurious matches. Still, the odds are heavily in our favor.
