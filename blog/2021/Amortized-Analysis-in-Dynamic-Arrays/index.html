@@ -12,7 +12,7 @@
   Kelvin Ting
 
 
-  | blog
+  | Amortized Analysis in Dynamic Arrays
 
 </title>
 <meta name="description" content="A journay to the world of technology.
@@ -38,7 +38,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
 
 <link rel="stylesheet" href="/assets/css/main.css">
-<link rel="canonical" href="https://tingkelvin.github.io/blog/">
+<link rel="canonical" href="https://tingkelvin.github.io/blog/2021/Amortized-Analysis-in-Dynamic-Arrays/">
 
 
 <!-- Dark Mode -->
@@ -84,14 +84,10 @@
             <a class="nav-link" href="/blog/">
               blog
               
-              <span class="sr-only">(current)</span>
-              
             </a>
           </li>
           
           <!-- Other pages -->
-          
-          
           
           
           
@@ -172,8 +168,8 @@
           
           
           
-            <div class = "toggle-container">
-              <a id = "light-toggle">
+            <div class="toggle-container">
+              <a id="light-toggle">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
               </a>
@@ -190,110 +186,211 @@
     <!-- Content -->
 
     <div class="container mt-5">
-      <div class="post">
-
-  <div class="header-bar">
-    <h1>Kelvin's Tech Blog</h1>
-    <h2>If you can't explain it simply, you don't understand it well enough</h2>
-  </div>
+      
 
 
-  <ul class="post-list">
-    
 
-    
-    
-    
-    
 
-    <li>
-      <h3><a class="post-title" href="/blog/2021/Efficient-String-Matching-via-Hashing/">Efficient String Matching via Hashing</a>
-      </h3>
-      <p>Compute String Matching in O(M+N) under Rabin-Karp Algorithm</p>
-      <p class="post-meta"> 3 min read &nbsp; &middot; &nbsp;
-        December 3, 2021
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2021">
-          <i class="fas fa-calendar fa-sm"></i> 2021 </a>
 
-          
+<div class="post">
 
-          
+  <header class="post-header">
+    <h1 class="post-title">Amortized Analysis in Dynamic Arrays</h1>
+    <p class="post-meta">July 5, 2021</p>
+    <p class="post-tags">
+      <a href="/blog/2021"> <i class="fas fa-calendar fa-sm"></i> 2021 </a>
+      
+
+      
+
     </p>
-    </li>
+  </header>
 
-    
+  <article class="post-content">
+    <p>A dynamically resizing array, allows you to have benefits of an array while offering flexibility in size. As a result, you won’t run out of space since the capacity of the array will grow as you insert elements.</p>
 
-    
-    
-    
-    
+<p>So how often should this resizing occurs? And how do you describe the runtime of insertion? This is a tricky question.</p>
 
-    <li>
-      <h3><a class="post-title" href="/blog/2021/Attack-Graph/">Attack Graph in Cyber Security</a>
-      </h3>
-      <p>Attack Graph decrtibes the squence of events in cyber attack.</p>
-      <p class="post-meta"> 3 min read &nbsp; &middot; &nbsp;
-        December 1, 2021
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2021">
-          <i class="fas fa-calendar fa-sm"></i> 2021 </a>
+<p>When the array is full, we create a new array with double the capacity of the previous array.</p>
 
-          
+<p>Here is a an example of inserting 16 elements (from 1 to 16).</p>
 
-          
-    </p>
-    </li>
+<p><strong>An example of Array resizing</strong></p>
 
-    
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>element to insert</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>11</th>
+      <th>12</th>
+      <th>13</th>
+      <th>14</th>
+      <th>15</th>
+      <th>16</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>size of the array</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4</td>
+      <td>4</td>
+      <td>8</td>
+      <td>8</td>
+      <td>8</td>
+      <td>8</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>cost of resize</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>cost of insert</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
 
-    
-    
-    
-    
+<p>We can see the size of array is double when the array is full (1→2→4→8→16). The process of creating of new array invokes 2 costs: cost of copy the previous elements and cost of inserting new elements. For example, when try to insert element 2, the array is full so we need to create a new with the size of 2 (previous size is 1), first we copy the previous elements, there is only one element (in this case is element 1), we copy the previous element (1 cost) and insert element 2 (1 cost). So the total cost is 2.</p>
 
-    <li>
-      <h3><a class="post-title" href="/blog/2021/Speical-Examples-in-Big/">Some special example in Big O</a>
-      </h3>
-      <p>Some tricky questions to test your understanding of big O.</p>
-      <p class="post-meta"> 13 min read &nbsp; &middot; &nbsp;
-        November 24, 2021
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2021">
-          <i class="fas fa-calendar fa-sm"></i> 2021 </a>
+<p><strong>Total Cost</strong></p>
 
-          
+<p><em>Cost of inserting new element</em>s</p>
 
-          
-    </p>
-    </li>
+<p>If,</p>
 
-    
-  </ul>
+\[N = \ total\ number\ of\ elements\  to\  insert\]
+
+<p>There is alway N costs, because each element will cost 1 to insert. For example, if there is 16 elements, there are 16 insertions, we will have a cost of 16.</p>
+
+<p>\begin{equation}
+\label{eq:1}
+total\ cost\ of\ insertion = N
+\end{equation}</p>
+
+<p><em>Cost of resizes</em></p>
+
+<p>First, we need to ask ourself how many times that resize occurs?</p>
+
+<p>From our previous example,</p>
+
+\[total\ cost\ of\ resizing = (1 + 2 + 4 + 8 + 16)\]
+
+<p>There are 5 terms as resize happens 5 times.</p>
+
+<p>\begin{equation}
+\label{eq:2}
+number\ of\ resize = log\ N + 1
+\end{equation}
+For example, we have 16 elements to insert, the number of time to resize is \(log\ 16 + 1\), which is 5.
+Everytime we resize, we need to copy all the previous elements. For example, the first resize we need to copy 1 element, second time we need to 2 elements, third time we need to copy 4 elements …etc.</p>
+
+<p>So how many times of copying occurs? We have doubled 5 times, everytime we double the size, in other way we can write this to,</p>
+
+\[(1 + 2 + 4 + 8 + 16) = 2^{0} + 2^{1} + 2^{2} + 2^{3} + 2^{4}\]
+
+<p>which is equal to,</p>
+
+\[(1 + 2 + 4 + 8 + 16) = 2^{5}\]
+
+<p><strong>HOLD ON</strong>. But if you add up, 1+2+4+8+16, we will have 31. Why? because the first time we resize we only need to copy 1 element. Subract 1,</p>
+
+\[(1 + 2 + 4 + 8 + 16) = 2^{5} -1\]
+
+<p>Mathematically,</p>
+
+\[total\ resize\ cost = 2^{number\ of\ reszie} - 1\]
+
+<p>and from \eqref{eq:2}, we can rewrite as, 
+\begin{equation}
+\label{eq:3}
+total\ resize\ cost = 2^{log N + 1} - 1
+\end{equation}</p>
+
+<p><strong>Amortized Analysis</strong></p>
+
+<p>Amortized Analysis, is the study of the overall performance. It allows us to describe that, worst case happens every once in a while. But once it happens, it won’t happen again for so long that the cost is “amortized”.</p>
+
+<p>Combine \eqref{eq:1} and \eqref{eq:3},</p>
+
+\[total\ cost\ =\ total\ number\ of\ insert + total\ resize\ cost\]
+
+\[= N + 2^{log N + 1} -1\]
+
+<p>Since,</p>
+
+\[2^{log N + 1} - 1 \leq 2N\]
+
+<p>\(2N\)  is the upper bound of \(2^{log N + 1} - 1\) since \(2^{log N + 1}\) cannot grow larger than \(2N\).</p>
+
+<p>We can simplify as,</p>
+
+\[total\ cost\ = N + 2N = 3N\]
+
+<p>Finally, we divide total cost by the number of elements, we get</p>
+
+\[amortized\ cost = \frac{3N}{N} = 3\]
+
+<p>So the complexity of inserting an element is constant,</p>
+
+\[complexity\ of\ insertion = O(1)\]
+
+<p><strong>Conclusion</strong></p>
+
+<p>When we resize the arary, we double the capacity of the previous array. The complexity of insertion overall is constant.</p>
+
+  </article>
 
   
-<nav aria-label="Blog page naviation">
-  <ul class="pagination pagination-lg justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="" tabindex="-1" aria-disabled="">Newer</a>
-    </li>
-    
-      
-        <li class="page-item active"><a class="page-link" href="/blog/index.html" title="blog">1</a></li>
-      
-        <li class="page-item "><a class="page-link" href="/blog/page/2/index.html" title="blog - page 2">2</a></li>
-      
-    
-    <li class="page-item ">
-      <a class="page-link" href="/blog/page/2/">Older</a>
-    </li>
-  </ul>
-</nav>
-
-
 
 </div>
 
@@ -302,17 +399,7 @@
     <!-- Footer -->
 
     
-<!-- <footer class="fixed-bottom">
-  <div class="container mt-0">
-    &copy; Copyright 2023 Kelvin  Ting.
-    
-    
-    
-  </div>
-</footer>
-
-
-  </body>
+</body>
 
   <!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>

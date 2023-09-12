@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://tingkelvin.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tingkelvin.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2023-09-12T15:19:09+00:00</updated><id>https://tingkelvin.github.io/feed.xml</id><title type="html">Kelvin Ting</title><subtitle>A journay to the world of technology.
+</subtitle><entry><title type="html">Efficient String Matching via Hashing</title><link href="https://tingkelvin.github.io/blog/2021/Efficient-String-Matching-via-Hashing/" rel="alternate" type="text/html" title="Efficient String Matching via Hashing" /><published>2021-12-03T00:00:00+00:00</published><updated>2021-12-03T00:00:00+00:00</updated><id>https://tingkelvin.github.io/blog/2021/Efficient%20String%20Matching%20via%20Hashing</id><content type="html" xml:base="https://tingkelvin.github.io/blog/2021/Efficient-String-Matching-via-Hashing/"><![CDATA[<p><strong>String Matching</strong></p>
+
+<p>String matching is a common problem in natural language processing. Given a text \(t\) we want to find if a string \(p\) exists in the text.</p>
+
+<p>The simpliest way to do this is to compare every characters in the text.</p>
+
+<p>If the length of the text is \(n\) and the length of the text is \(p\).</p>
+
+<p>Then the complexiry is \(O(mn)\) which is not efficient.</p>
+
+<p><strong>Hashing</strong></p>
+
+<p>Suppose we have the following weight for characters A to J,</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>weight</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>character</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We define the hash function as,</p>
+
+\[hash\ value\ for\ pattern(p) = \sum_{i=1}^{m}{weights[character]*len(weights)^{m-1}} mod\ 13\]
+
+<p>Let’s have a concrete example,</p>
+
+<p>The string \(p\) is,</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>m</th>
+      <th>3</th>
+      <th>2</th>
+      <th>1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>character</td>
+      <td>C</td>
+      <td>D</td>
+      <td>D</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Hash value for pattern(“CDD”) is,</p>
+
+\[H('CDD')= ((3 * 10^{2}) + (4 * 10^{1}) + (4 * 10^{0}))mod 13\]
+
+\[= 344\ mod\ 13\]
+
+\[= 6\]
+
+<p><strong>Rabin-Karp Algorithm</strong></p>
+
+<p>If the hash value of the window is same as the hash value of our pattern, then we need to check every character to see if they match because in some cases, even the hash value is the same, the characters are not the same.</p>
+
+<p>Given the following text “ABCCDDAEFG”,</p>
+
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td>character</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>C</td>
+      <td>D</td>
+      <td>D</td>
+      <td>A</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Hash value for the first window “ABC”,</p>
+
+\[H('ABC')= ((1 * 10^{2}) + (2 * 10^{1}) + (3 * 10^{0}))\ mod\ 13\]
+
+\[=\ 123\ mod\ 13\]
+
+\[=\ 6\]
+
+<p>In our example, the H(“ABD”) = H(“CDD”), even though they are not the same.</p>
+
+<p>Then we move to the second window which is ‘BCC’. Here is the tricky part. If we want to calcaulte the hash value of second window “BCC”, in stead of go though all the calculations. We can subtract it from the first window.</p>
+
+\[H('BCC') = (H(ABC) - H(A))*d + H(C)\]
+
+<p>By mutiplying \(H(ABC) - H(A))\) by \(d\), we shift the position of “BC” to left by one, then add the value of\(H(C)\), we get the hash value of \(H('BCC')\).</p>
+
+<p>Full caluation,</p>
+
+\[= (((1 * 10^{2}) + (2 * 10^{1}) + (3 * 10^{0}) - (1 * 10^{2}))*10 + 3*10^{0}) mod\ 13\]
+
+\[= 12\]
+
+<p>We have to compute the hash value each window, maximum of number of window is \(M\), so the complexity of computing all windows is \(O(M)\), if the hash values of the window and the pattern are the same we check if all the characters are the same which takes \(O(N)\).</p>
+
+<p>We get no guarantee the algorithm runs in \(O(n+m)\) time, because we may get unlucky and have the hash values regularly collide with spurious matches. Still, the odds are heavily in our favor.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Compute String Matching in O(M+N) under Rabin-Karp Algorithm]]></summary></entry><entry><title type="html">Attack Graph in Cyber Security</title><link href="https://tingkelvin.github.io/blog/2021/Attack-Graph/" rel="alternate" type="text/html" title="Attack Graph in Cyber Security" /><published>2021-12-01T00:00:00+00:00</published><updated>2021-12-01T00:00:00+00:00</updated><id>https://tingkelvin.github.io/blog/2021/Attack%20Graph</id><content type="html" xml:base="https://tingkelvin.github.io/blog/2021/Attack-Graph/"><![CDATA[<p><strong>Direct Graph</strong></p>
+
+<p>In large scale of computer network, user authentication is crucial in the process that keeps unauthorized users from gaining access to sensitive information. User authenication indicates a directional relationships between computers and users. Therefore, this user authenication relationship can be modelled by directed graphs. These directed graphs can be broken down into many Person’s Authentication Subgraphs(PAS) was defined by Ken, Liebrock &amp; Neil to model user authenication and behvrious.</p>
+
+<div class="row mt-3">
+    <div class="col-md mt-3 mt-md-0"></div>
+    <div class="col-md mt-3 mt-md-0">
+        
+
+
+<img class="img-fluid rounded z-depth-1" src="/assets/resized/attackgraph-480x177.png" srcset="    /assets/resized/attackgraph-480x177.png 480w,/ assets/img/attackgraph/attackgraph.png 720w" />
+
+    </div>
+    <div class="col-md mt-3 mt-md-0"></div>
+</div>
+<div class="caption">
+    Fig. 1 - A simple directed graph shows that a user u can log into computer c1 which has access to computers from c2 to c3.
+</div>
+
+<p><strong>Definition</strong></p>
+
+<p>A path is defined as a squenece of arcs from
+vertice \(v_{1}\) to vertex \(v_{n}\).</p>
+
+\[P_{u}(v_{1}, v_{n}) = (v_{1}, v_{2}),...,(v_{n-1}, v_{n})\ s.t.\ (v_{j}, v_{j+1}) \in A_{u}, j=1,...,n-1.\]
+
+<p>A path distance \(d(x,y)\) is defined as the shortest path from vertex \(x\) to vertex \(y\).</p>
+
+<p>A Diameter is defined as the maximum distance \(d=(x,y)\) between any two vertices within \(G_{u}\).</p>
+
+\[D_{u} = max\ d(x,y)\ s.t. x,y \in V_{u} \wedge P_{u}(x,y) \neq \emptyset\]
+
+<p>The first time the arc \((x,y)\) was observed is defined as \(t_{first}(x,y)\).</p>
+
+<p>The last time the arc \((x,y)\) was observed is defined as \(t_{last}(x,y)\)</p>
+
+\[\overrightarrow{p_{u}}(v_{1}, v_{n}) = (v_{1}, v_{2}),...,(v_{n-1}, v_{n})\ s.t.\]
+
+\[t_{last}(v_{j}, v_{j+1}) \geq max(t_{first}(v_{1}, v_{2}),...,t_{first}(v_{j}, v_{j+1}))\]
+
+<p>The maximum time-constrained distance is defined as,</p>
+
+\[\overrightarrow{D_{u}} = max\ \overrightarrow{d} (x,y) s.t. x,y \in V_{u}  \wedge P_{u}(x,y) \neq \emptyset\]
+
+<p>This can illustrated using the following example,</p>
+
+<div class="row mt-3">
+    <div class="col-md mt-3 mt-md-0"></div>
+    <div class="col-md mt-3 mt-md-0">
+        
+
+
+<img class="img-fluid rounded z-depth-1" src="/assets/resized/attackpath-480x73.png" srcset="    /assets/resized/attackpath-480x73.png 480w,/ assets/img/attackgraph/attackpath.png 720w" />
+
+    </div>
+    <div class="col-md mt-3 mt-md-0"></div>
+</div>
+<div class="caption">
+    Fig. 2 - The longest non-time-constrained path with a length of 3 (from v1 to v4). The longest time-contrained path with a length of 2 (from v1 to v3) because the last time from v3 to v4 is smaller than first time from v2 to v3. That means v4 was logged from v3 before v3 was logged from v2 implies they are disconnected.
+</div>
+
+<p>The set of vertices \(O_{u}\) as outstars where each vertex has an outdegree greater than 1 and out degree is greater than outdegree.</p>
+
+\[O_{u} = \{ v \in V_{u}\ |\ deg^{+}(v) &gt; 1 \wedge deg^{-}(v) \geq deg^{+}(v) \}\]
+
+<p>The set of vertices \(I_{u}\) as instars where each vertex has an outdegree greater than 1 and out degree is greater than outdegree.</p>
+
+\[I_{u} = \{ v \in V_{u}\ |\ deg^{-}(v) &gt; 1 \wedge deg^{+}(v) \geq deg^{-}(v) \}\]
+
+<p>Vertices that both indegree and outdegree of zero is defined as isolated verices Z_{u}.</p>
+
+\[Z_{u} = \{ v \in V_{u}\ |\ deg^{-}(v) = 0 \wedge deg^{+}(v) = 0\}\]
+
+<p>Time-constrained transit vertices \(\overrightarrow{T}_{u}\), where each member vertex v has at least one arc proceeding from a parent vertex and one arc succeeding to a child vertex.</p>
+
+\[Z_{u} = \{ v \in V_{u}\ |\ deg^{-}(v) = 0 \wedge deg^{+}(v) = 0\}\]]]></content><author><name></name></author><summary type="html"><![CDATA[Attack Graph decrtibes the squence of events in cyber attack.]]></summary></entry><entry><title type="html">Some special example in Big O</title><link href="https://tingkelvin.github.io/blog/2021/Speical-Examples-in-Big/" rel="alternate" type="text/html" title="Some special example in Big O" /><published>2021-11-24T00:00:00+00:00</published><updated>2021-11-24T00:00:00+00:00</updated><id>https://tingkelvin.github.io/blog/2021/Speical%20Examples%20in%20Big</id><content type="html" xml:base="https://tingkelvin.github.io/blog/2021/Speical-Examples-in-Big/"><![CDATA[<p>Here are some tricky questions about big O.</p>
+
+<p>Given the following codes, what is its complexity?</p>
+
+<p><strong>Example 1 - Recursive Runtimes</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">f</span><span class="o">(</span><span class="n">n</span><span class="o">){</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="o">){</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+  <span class="o">}</span>
+	<span class="k">return</span> <span class="nf">f</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">f</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<details>
+  <summary>Answer</summary>
+  Answer     is $$O(2^{N})$$
+  If N = 4, f(4) will produce 2 f(3). Then, each f(3) will produce 2 f(2). Since there are 2 f(3), there will 4 f(2). Each f(2) will produce 2 f(1). Since there are 4 f(2), there will be 8 f(1). There are $$2^{0} + 2^{1} + 2^{2} ... 2^{N}$$ recursive calls which is equal to $$2^{N} - 1$$.
+</details>
+
+<p><strong>Example 2 - Pairs</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printPairs</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">array</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">array</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">array</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">array</span><span class="o">[</span><span class="n">i</span><span class="o">])</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<details>
+  <summary>Answer</summary>
+  Answer is $$O(2^{N})$$ 
+  How many loops?
+
+  $$(N-1)+(N-2)+...+2+1$$
+  $$= 1+2+3+...+(N-1)$$
+  $$=\frac{N(N-1)}{N}$$
+  $$=O(N^{2})$$
+
+  Or,
+  Loop (i,j) produced when N = 5:
+  (0,1)(0,2)(0,3)(0,4)
+       (1,2)(1,3)(1,4)
+            (2,3)(2,4)
+                 (3,4)
+  Looks like a (N,N) matrix but divided by 2, total amount of loops approximately is
+  $$\frac{N*N}{2}$$
+  $$ = O(N^{2})$$
+</details>
+
+<p><strong>Example 3 - Unordered Pairs</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">printUnorderedPairs</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arrayA</span><span class="o">,</span> <span class="kt">int</span><span class="o">][</span> <span class="n">arrayB</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">inti</span><span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">arrayA</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">arrayB</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">100000</span><span class="o">;</span> <span class="n">k</span><span class="o">++)</span> <span class="o">{</span>
+                    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">arrayA</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">+</span> <span class="s">","</span> <span class="o">+</span> <span class="n">arrayB</span><span class="o">[</span><span class="n">j</span><span class="o">]);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<details>
+  <summary>Answer</summary>
+  Answer is 
+  $$O(100000MN})$$
+  $$O(MN})$$
+</details>
+
+<p><strong>Example 3 - Unordered Pairs</strong></p>
+
+<p>This one is tricky!</p>
+
+<p>Suppose we had an algorithm that took in an array of N strings, the length of each string is s.
+Sorted each string, and then sorted the full array. What would the runtime be? Asuming sorting took O(x log x).</p>
+
+<details>
+  <summary>Answer</summary>
+  Sorting a string takes s log s and there N strings.
+  Soring  strings takes O(N * s log s).
+  Now sorting the array! This is the tricky part.
+  The way we sort string in a array is to compare each character in string.
+  There are s characters, each time takes O(s).
+  There N log N comparsion, therefore this will take O(s*N log N) time
+
+  Answer is O(N * s log s) + O(s * N log N) = O(N * s(log N + log s)).
+</details>
+
+<p><strong>Example 4 - Prime Number</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>boolean isPrime(int n) {
+    for (int x = 2; x * x &lt;= n; x++) {
+        if (n % X == 0) {
+            return false;
+        }
+    return true;
+} 
+</code></pre></div></div>
+
+<details>
+  <summary>Answer</summary>
+  When this loop stop?
+  x will mutiply itself until it is smaller or equal to n
+  We can write this,
+  $$ x * x = n $$
+  $$ x ^{2} = n $$
+  When,
+  $$ x = \sqrt{n}$$
+  The loop exists, so the complexity is
+  $$ = O (\sqrt{n})$$
+
+  If n is 100,
+  x will go though,
+
+  2*2-&gt;4*4-&gt;5*5-&gt;6*6-&gt;7*7-&gt;8*8-&gt;9*9-&gt;10*10
+
+  This is when the loops tops because 10*10 &lt;= 100. 
+</details>
+
+<p><strong>Example 5 - n Factorial</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>boolean isPrime(int n) {
+    for (int x = 2; x * x &lt;= n; x++) {
+        if (n % X == 0) {
+            return false;
+        }
+    return true;
+} 
+</code></pre></div></div>
+
+<details>
+  <summary>Answer</summary>
+  When this loop stop?
+  x will mutiply itself until it is smaller or equal to n
+  We can write this,
+  $$ x * x = n $$
+  $$ x ^{2} = n $$
+  When,
+  $$ x = \sqrt{n}$$
+  The loop exists, so the complexity is
+  $$ = O (\sqrt{n})$$
+
+  If n is 100,
+  x will go though,
+
+  2*2-&gt;4*4-&gt;5*5-&gt;6*6-&gt;7*7-&gt;8*8-&gt;9*9-&gt;10*10
+
+  This is when the loops stops because 10*10 &lt;= 100. 
+</details>
+
+<p><strong>Example 7 - Binary Search Tree</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int sum(Node node){
+    if (node == null){
+    	return 0
+    }
+    return sum(node.left) + node.value + sum(node.right);
+}
+</code></pre></div></div>
+
+<details>
+  <summary>Answer</summary>
+  First glance at this question, you might think binary tree means O(Log N)!
+  But if you think carefully, this code travrses all nodes which means its complexity is O(N).
+
+  Mathematically, we said that in first examples, each recusive calls will produce 2 recursive calls and there are $$2^{0} + 2^{1} + 2^{2} ... 2^{N}$$ recursive calls which is equal to $$2^{depth} - 1$$. The depth is $$Log N$$, where N is the amount of nodes. Put it together we have,
+  $$Let P = 2^{log N}$$
+  $$ log P = log 2^{log N}$$
+  $$ log P = log N$$
+  $$ p = N $$
+  $$ 2^{log N} = N $$
+ which is also O(N).
+</details>
+
+<p><strong>Example 9 - All Fibonacci</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">allFib</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="s">": "</span><span class="o">+</span> <span class="n">fib</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kt">int</span> <span class="nf">fib</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="k">return</span> <span class="nf">fib</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">fib</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<details>
+  <summary>Answer</summary>
+    $$2^{n} + 2^{n-1} + 2^{n-2} + ... 2^{1}$$
+    $$ = O(2^{n}) $$
+</details>
+
+<p><strong>Example 10 - Permutations of a String</strong></p>
+
+<p>Another very tricky question to tease your brain!</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">permutations</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">){</span>
+  <span class="n">permutation</span><span class="o">(</span><span class="n">str</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="kt">void</span> <span class="nf">permutations</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">,</span> <span class="nc">String</span> <span class="n">prefix</span><span class="o">){</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">){</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">prefix</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">str</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++){</span>
+      <span class="nc">String</span> <span class="n">rem</span> <span class="o">=</span> <span class="n">str</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="n">i</span><span class="o">)</span> <span class="o">+</span> <span class="n">str</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">);</span>
+      <span class="n">permutation</span><span class="o">(</span><span class="n">rem</span><span class="o">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">str</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<details>
+  <summary>Answer</summary>
+    How many base cases are there?
+    
+    If the length of string is N.
+    
+    There are N combination N*(N-1)*(N-2)...*1, that means we have N! base case
+    
+    How many calls before based case?
+    
+    Everytime you call permutation with N-1 call until you reach base case.
+    
+    Since there N charaters so at most N calls before the based case.
+    
+    We have N! base each case at most call N times.
+    
+    So complexity is O(N*N!).
+    
+    Each call take O(N) time to print and O(N)  to concatenate, which O(2N) = O(N)
+    
+    Total complexity = O(N^2 * N!)
+</details>
+
+<p><strong>Example 11 - Memorization of a String</strong></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">allFib</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span><span class="o">[]</span> <span class="n">memo</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
+    <span class="k">for</span><span class="o">(</span><span class="n">inti</span><span class="o">=</span> <span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span> <span class="n">n</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="s">": "</span><span class="o">+</span> <span class="n">fib</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="n">memo</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="kt">int</span> <span class="nf">fib</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">memo</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">=&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">n</span><span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">memo</span><span class="o">[</span><span class="n">n</span><span class="o">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="n">memo</span><span class="o">[</span><span class="n">n</span><span class="o">];</span>
+    <span class="n">memo</span><span class="o">[</span><span class="n">n</span><span class="o">]=</span> <span class="n">fib</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">memo</span><span class="o">)+</span> <span class="n">fib</span><span class="o">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="o">,</span> <span class="n">memo</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">memo</span><span class="o">[</span><span class="n">n</span><span class="o">];</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<details>
+  <summary>Answer</summary>
+    Any previous number will be remembered in the array.
+    So compexity is O(N)
+</details>
+
+<p><strong>Example 12 - Power of 2</strong></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">powers0f2</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">l</span><span class="o">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">powers0f2</span><span class="o">(</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span><span class="o">);</span> <span class="kt">int</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">prev</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span> <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">curr</span><span class="o">);</span> <span class="k">return</span> <span class="n">curr</span><span class="o">;</span>
+    <span class="o">}</span>   
+<span class="o">}</span>
+</code></pre></div></div>
+<details>
+  <summary>Answer</summary>
+    The complexity is
+    $$ log N $$
+    The recusrive call divided n/2 in every calls, how many calls until base case which is 0?
+</details>
+
+<p><strong>Example 13 - sum of digits</strong></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">sumDigits</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">sum</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">10</span><span class="o">;</span>
+        <span class="n">n</span> <span class="o">/=</span> <span class="mi">10</span><span class="o">;</span> <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">sum</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<details>
+  <summary>Answer</summary>
+    The complexity is equal to numbers of digits, lets its d.
+    
+    What is the largest of value N?
+    
+    If d is 4, then the largest value is 10000.
+    The largest is equal to,
+    $$ N = 10 ^ {d} $$
+    $$ log N = log 10 ^ {d} $$
+    $$ d = log N $$
+    
+    Hence, the complexity is O(log N).
+    
+</details>
+
+<p><strong>Example 14 - sum of digits</strong></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">numChars</span> <span class="o">=</span> <span class="mi">26</span><span class="o">;</span>
+<span class="kt">void</span> <span class="nf">printSortedStrings</span><span class="o">(</span><span class="kt">int</span> <span class="n">remaining</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">printSortedStrings</span><span class="o">(</span><span class="n">remaining</span><span class="o">,</span> <span class="s">""</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="kt">void</span> <span class="nf">printSortedStrings</span><span class="o">(</span><span class="kt">int</span> <span class="n">remaining</span><span class="o">,</span> <span class="nc">String</span> <span class="n">prefix</span><span class="o">)</span> 
+    <span class="o">{</span> <span class="k">if</span> <span class="o">(</span><span class="n">remaining</span><span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isinOrder</span><span class="o">(</span><span class="n">prefix</span><span class="o">))</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">prefix</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numchars</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">ithletter</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            <span class="n">printSortedStrings</span><span class="o">(</span><span class="n">remaining</span> <span class="o">-</span> <span class="mi">1</span><span class="o">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">c</span><span class="o">);</span> <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kt">boolean</span> <span class="nf">isinOrder</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">s</span><span class="o">.</span><span class="na">length</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">prev</span> <span class="nf">ithLetter</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="o">));</span>
+        <span class="kt">int</span> <span class="n">curr</span> <span class="o">=</span> <span class="n">ithLetter</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="n">i</span><span class="o">));</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">prev</span> <span class="o">&gt;</span> <span class="n">curr</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span> 
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kt">char</span> <span class="nf">ithLetter</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="kt">char</span><span class="o">)</span> <span class="o">(((</span><span class="kt">int</span><span class="o">)</span> <span class="sc">'a'</span><span class="o">)</span> <span class="o">+</span> <span class="n">i</span><span class="o">);</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+<details>
+  <summary>Answer</summary>
+    Lets r is the remaining (the length of string).
+    
+    The loop in printSortedStrings loop though all the numChars, lets say is c.
+    
+    If r = 4, then there will be 4 printSortedStrings, because the parameters of printSortedStrings is (r-1) until base case which is when r = 0
+    
+    So the complexity of generating string is,
+    $$O(c^{r})$$
+    And, we check if the string is sorted, the way we check is to loop though all the string which takes O(r), we did that to every strings.
+    
+    Total complexity,
+    
+    $$O(rc^{r})$$
+    
+</details>]]></content><author><name></name></author><summary type="html"><![CDATA[Some tricky questions to test your understanding of big O.]]></summary></entry><entry><title type="html">Amortized Analysis in Dynamic Arrays</title><link href="https://tingkelvin.github.io/blog/2021/Amortized-Analysis-in-Dynamic-Arrays/" rel="alternate" type="text/html" title="Amortized Analysis in Dynamic Arrays" /><published>2021-07-05T00:00:00+00:00</published><updated>2021-07-05T00:00:00+00:00</updated><id>https://tingkelvin.github.io/blog/2021/Amortized%20Analysis%20in%20Dynamic%20Arrays</id><content type="html" xml:base="https://tingkelvin.github.io/blog/2021/Amortized-Analysis-in-Dynamic-Arrays/"><![CDATA[<p>A dynamically resizing array, allows you to have benefits of an array while offering flexibility in size. As a result, you won’t run out of space since the capacity of the array will grow as you insert elements.</p>
+
+<p>So how often should this resizing occurs? And how do you describe the runtime of insertion? This is a tricky question.</p>
+
+<p>When the array is full, we create a new array with double the capacity of the previous array.</p>
+
+<p>Here is a an example of inserting 16 elements (from 1 to 16).</p>
+
+<p><strong>An example of Array resizing</strong></p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>element to insert</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+      <th>11</th>
+      <th>12</th>
+      <th>13</th>
+      <th>14</th>
+      <th>15</th>
+      <th>16</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>size of the array</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4</td>
+      <td>4</td>
+      <td>8</td>
+      <td>8</td>
+      <td>8</td>
+      <td>8</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>cost of resize</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>cost of insert</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>We can see the size of array is double when the array is full (1→2→4→8→16). The process of creating of new array invokes 2 costs: cost of copy the previous elements and cost of inserting new elements. For example, when try to insert element 2, the array is full so we need to create a new with the size of 2 (previous size is 1), first we copy the previous elements, there is only one element (in this case is element 1), we copy the previous element (1 cost) and insert element 2 (1 cost). So the total cost is 2.</p>
+
+<p><strong>Total Cost</strong></p>
+
+<p><em>Cost of inserting new element</em>s</p>
+
+<p>If,</p>
+
+\[N = \ total\ number\ of\ elements\  to\  insert\]
+
+<p>There is alway N costs, because each element will cost 1 to insert. For example, if there is 16 elements, there are 16 insertions, we will have a cost of 16.</p>
+
+<p>\begin{equation}
+\label{eq:1}
+total\ cost\ of\ insertion = N
+\end{equation}</p>
+
+<p><em>Cost of resizes</em></p>
+
+<p>First, we need to ask ourself how many times that resize occurs?</p>
+
+<p>From our previous example,</p>
+
+\[total\ cost\ of\ resizing = (1 + 2 + 4 + 8 + 16)\]
+
+<p>There are 5 terms as resize happens 5 times.</p>
+
+<p>\begin{equation}
+\label{eq:2}
+number\ of\ resize = log\ N + 1
+\end{equation}
+For example, we have 16 elements to insert, the number of time to resize is \(log\ 16 + 1\), which is 5.
+Everytime we resize, we need to copy all the previous elements. For example, the first resize we need to copy 1 element, second time we need to 2 elements, third time we need to copy 4 elements …etc.</p>
+
+<p>So how many times of copying occurs? We have doubled 5 times, everytime we double the size, in other way we can write this to,</p>
+
+\[(1 + 2 + 4 + 8 + 16) = 2^{0} + 2^{1} + 2^{2} + 2^{3} + 2^{4}\]
+
+<p>which is equal to,</p>
+
+\[(1 + 2 + 4 + 8 + 16) = 2^{5}\]
+
+<p><strong>HOLD ON</strong>. But if you add up, 1+2+4+8+16, we will have 31. Why? because the first time we resize we only need to copy 1 element. Subract 1,</p>
+
+\[(1 + 2 + 4 + 8 + 16) = 2^{5} -1\]
+
+<p>Mathematically,</p>
+
+\[total\ resize\ cost = 2^{number\ of\ reszie} - 1\]
+
+<p>and from \eqref{eq:2}, we can rewrite as, 
+\begin{equation}
+\label{eq:3}
+total\ resize\ cost = 2^{log N + 1} - 1
+\end{equation}</p>
+
+<p><strong>Amortized Analysis</strong></p>
+
+<p>Amortized Analysis, is the study of the overall performance. It allows us to describe that, worst case happens every once in a while. But once it happens, it won’t happen again for so long that the cost is “amortized”.</p>
+
+<p>Combine \eqref{eq:1} and \eqref{eq:3},</p>
+
+\[total\ cost\ =\ total\ number\ of\ insert + total\ resize\ cost\]
+
+\[= N + 2^{log N + 1} -1\]
+
+<p>Since,</p>
+
+\[2^{log N + 1} - 1 \leq 2N\]
+
+<p>\(2N\)  is the upper bound of \(2^{log N + 1} - 1\) since \(2^{log N + 1}\) cannot grow larger than \(2N\).</p>
+
+<p>We can simplify as,</p>
+
+\[total\ cost\ = N + 2N = 3N\]
+
+<p>Finally, we divide total cost by the number of elements, we get</p>
+
+\[amortized\ cost = \frac{3N}{N} = 3\]
+
+<p>So the complexity of inserting an element is constant,</p>
+
+\[complexity\ of\ insertion = O(1)\]
+
+<p><strong>Conclusion</strong></p>
+
+<p>When we resize the arary, we double the capacity of the previous array. The complexity of insertion overall is constant.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[What is the complexity of inserting a new element in a dynamic array?]]></summary></entry></feed>

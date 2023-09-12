@@ -12,7 +12,7 @@
   Kelvin Ting
 
 
-  | blog
+  | Efficient String Matching via Hashing
 
 </title>
 <meta name="description" content="A journay to the world of technology.
@@ -38,7 +38,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
 
 <link rel="stylesheet" href="/assets/css/main.css">
-<link rel="canonical" href="https://tingkelvin.github.io/blog/">
+<link rel="canonical" href="https://tingkelvin.github.io/blog/2021/Efficient-String-Matching-via-Hashing/">
 
 
 <!-- Dark Mode -->
@@ -84,14 +84,10 @@
             <a class="nav-link" href="/blog/">
               blog
               
-              <span class="sr-only">(current)</span>
-              
             </a>
           </li>
           
           <!-- Other pages -->
-          
-          
           
           
           
@@ -172,8 +168,8 @@
           
           
           
-            <div class = "toggle-container">
-              <a id = "light-toggle">
+            <div class="toggle-container">
+              <a id="light-toggle">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
               </a>
@@ -190,110 +186,162 @@
     <!-- Content -->
 
     <div class="container mt-5">
-      <div class="post">
-
-  <div class="header-bar">
-    <h1>Kelvin's Tech Blog</h1>
-    <h2>If you can't explain it simply, you don't understand it well enough</h2>
-  </div>
+      
 
 
-  <ul class="post-list">
-    
 
-    
-    
-    
-    
 
-    <li>
-      <h3><a class="post-title" href="/blog/2021/Efficient-String-Matching-via-Hashing/">Efficient String Matching via Hashing</a>
-      </h3>
-      <p>Compute String Matching in O(M+N) under Rabin-Karp Algorithm</p>
-      <p class="post-meta"> 3 min read &nbsp; &middot; &nbsp;
-        December 3, 2021
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2021">
-          <i class="fas fa-calendar fa-sm"></i> 2021 </a>
 
-          
+<div class="post">
 
-          
+  <header class="post-header">
+    <h1 class="post-title">Efficient String Matching via Hashing</h1>
+    <p class="post-meta">December 3, 2021</p>
+    <p class="post-tags">
+      <a href="/blog/2021"> <i class="fas fa-calendar fa-sm"></i> 2021 </a>
+      
+
+      
+
     </p>
-    </li>
+  </header>
 
-    
+  <article class="post-content">
+    <p><strong>String Matching</strong></p>
 
-    
-    
-    
-    
+<p>String matching is a common problem in natural language processing. Given a text \(t\) we want to find if a string \(p\) exists in the text.</p>
 
-    <li>
-      <h3><a class="post-title" href="/blog/2021/Attack-Graph/">Attack Graph in Cyber Security</a>
-      </h3>
-      <p>Attack Graph decrtibes the squence of events in cyber attack.</p>
-      <p class="post-meta"> 3 min read &nbsp; &middot; &nbsp;
-        December 1, 2021
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2021">
-          <i class="fas fa-calendar fa-sm"></i> 2021 </a>
+<p>The simpliest way to do this is to compare every characters in the text.</p>
 
-          
+<p>If the length of the text is \(n\) and the length of the text is \(p\).</p>
 
-          
-    </p>
-    </li>
+<p>Then the complexiry is \(O(mn)\) which is not efficient.</p>
 
-    
+<p><strong>Hashing</strong></p>
 
-    
-    
-    
-    
+<p>Suppose we have the following weight for characters A to J,</p>
 
-    <li>
-      <h3><a class="post-title" href="/blog/2021/Speical-Examples-in-Big/">Some special example in Big O</a>
-      </h3>
-      <p>Some tricky questions to test your understanding of big O.</p>
-      <p class="post-meta"> 13 min read &nbsp; &middot; &nbsp;
-        November 24, 2021
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2021">
-          <i class="fas fa-calendar fa-sm"></i> 2021 </a>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>weight</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>10</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>character</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+    </tr>
+  </tbody>
+</table>
 
-          
+<p>We define the hash function as,</p>
 
-          
-    </p>
-    </li>
+\[hash\ value\ for\ pattern(p) = \sum_{i=1}^{m}{weights[character]*len(weights)^{m-1}} mod\ 13\]
 
-    
-  </ul>
+<p>Let’s have a concrete example,</p>
+
+<p>The string \(p\) is,</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>m</th>
+      <th>3</th>
+      <th>2</th>
+      <th>1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>character</td>
+      <td>C</td>
+      <td>D</td>
+      <td>D</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Hash value for pattern(“CDD”) is,</p>
+
+\[H('CDD')= ((3 * 10^{2}) + (4 * 10^{1}) + (4 * 10^{0}))mod 13\]
+
+\[= 344\ mod\ 13\]
+
+\[= 6\]
+
+<p><strong>Rabin-Karp Algorithm</strong></p>
+
+<p>If the hash value of the window is same as the hash value of our pattern, then we need to check every character to see if they match because in some cases, even the hash value is the same, the characters are not the same.</p>
+
+<p>Given the following text “ABCCDDAEFG”,</p>
+
+<table class="table table-bordered">
+  <tbody>
+    <tr>
+      <td>character</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>C</td>
+      <td>D</td>
+      <td>D</td>
+      <td>A</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Hash value for the first window “ABC”,</p>
+
+\[H('ABC')= ((1 * 10^{2}) + (2 * 10^{1}) + (3 * 10^{0}))\ mod\ 13\]
+
+\[=\ 123\ mod\ 13\]
+
+\[=\ 6\]
+
+<p>In our example, the H(“ABD”) = H(“CDD”), even though they are not the same.</p>
+
+<p>Then we move to the second window which is ‘BCC’. Here is the tricky part. If we want to calcaulte the hash value of second window “BCC”, in stead of go though all the calculations. We can subtract it from the first window.</p>
+
+\[H('BCC') = (H(ABC) - H(A))*d + H(C)\]
+
+<p>By mutiplying \(H(ABC) - H(A))\) by \(d\), we shift the position of “BC” to left by one, then add the value of\(H(C)\), we get the hash value of \(H('BCC')\).</p>
+
+<p>Full caluation,</p>
+
+\[= (((1 * 10^{2}) + (2 * 10^{1}) + (3 * 10^{0}) - (1 * 10^{2}))*10 + 3*10^{0}) mod\ 13\]
+
+\[= 12\]
+
+<p>We have to compute the hash value each window, maximum of number of window is \(M\), so the complexity of computing all windows is \(O(M)\), if the hash values of the window and the pattern are the same we check if all the characters are the same which takes \(O(N)\).</p>
+
+<p>We get no guarantee the algorithm runs in \(O(n+m)\) time, because we may get unlucky and have the hash values regularly collide with spurious matches. Still, the odds are heavily in our favor.</p>
+
+  </article>
 
   
-<nav aria-label="Blog page naviation">
-  <ul class="pagination pagination-lg justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="" tabindex="-1" aria-disabled="">Newer</a>
-    </li>
-    
-      
-        <li class="page-item active"><a class="page-link" href="/blog/index.html" title="blog">1</a></li>
-      
-        <li class="page-item "><a class="page-link" href="/blog/page/2/index.html" title="blog - page 2">2</a></li>
-      
-    
-    <li class="page-item ">
-      <a class="page-link" href="/blog/page/2/">Older</a>
-    </li>
-  </ul>
-</nav>
-
-
 
 </div>
 
@@ -302,17 +350,7 @@
     <!-- Footer -->
 
     
-<!-- <footer class="fixed-bottom">
-  <div class="container mt-0">
-    &copy; Copyright 2023 Kelvin  Ting.
-    
-    
-    
-  </div>
-</footer>
-
-
-  </body>
+</body>
 
   <!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
